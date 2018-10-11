@@ -8,12 +8,16 @@
 
 import Foundation
 
-struct GARequestLoggingReport {
-    let payloads: [GARequestPayload]
+public struct GARequestLoggingReport {
+    public let payloads: [GARequestPayload]
+    
+    public init(payloads: [GARequestPayload]){
+        self.payloads = payloads
+    }
 }
 
 extension GARequestLoggingReport: Equatable {
-    static func ==(lhs: GARequestLoggingReport, rhs: GARequestLoggingReport) -> Bool {
+    public static func ==(lhs: GARequestLoggingReport, rhs: GARequestLoggingReport) -> Bool {
         guard lhs.payloads == rhs.payloads else {
             return false
         }

@@ -8,18 +8,18 @@
 
 import Foundation
 
-class GARequestLoggingServer {
+public class GARequestLoggingServer {
     
-    let localhostServer: LocalhostServer
+    public let localhostServer: LocalhostServer
     
     var recordedEvents: [UInt64: GARequestPayload]
     
-    init(portNumber: UInt) {
+    public init(portNumber: UInt) {
         self.localhostServer = LocalhostServer(portNumber: portNumber)
         recordedEvents = [UInt64: GARequestPayload]()
     }
     
-    func startListening() {
+    public func startListening() {
         localhostServer.get("/collect") { request in
             guard let query = request.url?.query else {
                 return nil
@@ -45,11 +45,11 @@ class GARequestLoggingServer {
         self.localhostServer.startListening()
     }
     
-    func stopListening() {
+    public func stopListening() {
         self.localhostServer.stopListening()
     }
     
-    func eventsReport() -> GARequestLoggingReport {
+    public func eventsReport() -> GARequestLoggingReport {
         
         let sortedKeys: [UInt64] = Array(self.recordedEvents.keys).sorted {
             return $0 < $1

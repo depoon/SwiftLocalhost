@@ -8,7 +8,7 @@
 
 import Foundation
 
-protocol LocalhostRouter {
+public protocol LocalhostRouter {
     
     init(portNumber: UInt)
     func get(_ path: String, routeBlock: @escaping ((URLRequest) -> LocalhostServerResponse?))
