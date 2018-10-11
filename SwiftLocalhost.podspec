@@ -16,6 +16,6 @@ DESC
   s.platform     = :ios, '9.0'
   s.requires_arc = true
 
-  s.source_files = 'SwiftLocalhost/Source/**/*'
+  s.source_files = 'Source/**/*'
   s.dependency 'Criollo'
 end

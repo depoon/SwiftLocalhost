@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct LocalhostServerResponse {    
-    let httpUrlResponse: HTTPURLResponse
-    let data: Data?
+public struct LocalhostServerResponse {
+    public let httpUrlResponse: HTTPURLResponse
+    public let data: Data?
 }

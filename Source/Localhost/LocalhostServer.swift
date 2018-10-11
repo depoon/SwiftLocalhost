@@ -11,49 +11,49 @@ import Criollo
 
 extension LocalhostServer: LocalhostRouter {
     
-    func get(_ path: String, routeBlock: @escaping ((URLRequest) -> LocalhostServerResponse?)) {
+    public func get(_ path: String, routeBlock: @escaping ((URLRequest) -> LocalhostServerResponse?)) {
         self.server.get(path, block: {  [weak self] (req, res, next) in
             self?.handleRoute(routeBlock: routeBlock, crRequest: req, crResponse: res)
         })
     }
     
-    func post(_ path: String, routeBlock: @escaping ((URLRequest) -> LocalhostServerResponse?)) {
+    public func post(_ path: String, routeBlock: @escaping ((URLRequest) -> LocalhostServerResponse?)) {
         self.server.post(path, block: {  [weak self] (req, res, next) in
             self?.handleRoute(routeBlock: routeBlock, crRequest: req, crResponse: res)
         })
     }
     
-    func delete(_ path: String, routeBlock: @escaping ((URLRequest) -> LocalhostServerResponse?)) {
+    public func delete(_ path: String, routeBlock: @escaping ((URLRequest) -> LocalhostServerResponse?)) {
         self.server.delete(path, block: {  [weak self] (req, res, next) in
             self?.handleRoute(routeBlock: routeBlock, crRequest: req, crResponse: res)
         })
 
     }
 
-    func put(_ path: String, routeBlock: @escaping ((URLRequest) -> LocalhostServerResponse?)) {
+    public func put(_ path: String, routeBlock: @escaping ((URLRequest) -> LocalhostServerResponse?)) {
         self.server.put(path, block: {  [weak self] (req, res, next) in
             self?.handleRoute(routeBlock: routeBlock, crRequest: req, crResponse: res)
         })
 
     }
 
-    func startListening(){
+    public func startListening(){
         self.server.startListening(nil, portNumber: self.portNumber)
     }
     
-    func stopListening() {
+    public func stopListening() {
         self.server.stopListening()
     }
 }
 
-class LocalhostServer {
+public class LocalhostServer {
     
     let server: CRHTTPServer
     let portNumber: UInt
     
     var recordedRequests: [URLRequest]
     
-    required init(portNumber: UInt){
+    public required init(portNumber: UInt){
         server = CRHTTPServer()
         self.portNumber = portNumber
         recordedRequests = [URLRequest]()
@@ -115,23 +115,3 @@ struct LocalhostJsonResponse: LocalhostResponse {
     
     
 }
-/*
-     server.get("/collect") { (req, res, next) in
-         //res.allHTTPHeaderFields = ["Content-Type": "image/gif"]
-         let httpHeaders: [String: String] = [
-             "Content-Type": "image/gif",
-             "Date": "Tue, 25 Sep 2018 17:30:12 GMT",
-             "Expires":"Mon, 01 Jan 1990 00:00:00 GMT",
-             "Last-Modified": "Sun, 17 May 1998 03:00:00 GMT",
-             "Pragma": "no-cache",
-             "Server":"Golfe2",
-             "X-Content-Type-Options": "nosniff"
-         ]
-         res.setStatusCode(200, description: nil)
-         res.setAllHTTPHeaderFields(httpHeaders)
-         let fileUrl = Bundle(for: type(of: self)).url(forResource: "responseCollect", withExtension: "gif")!
-         //res.bodyData = try! Data(contentsOf: fileUrl)
-         //res.send("Hello world!")
-         res.send(try! Data(contentsOf: fileUrl))
-    }
- */

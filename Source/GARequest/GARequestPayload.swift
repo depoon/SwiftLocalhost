@@ -8,7 +8,7 @@
 
 import Foundation
 
-enum GARequestPayload {
+public enum GARequestPayload {
     case event(zIdentifier: UInt64?, category: String, action: String, label: String),
         screenView(zIdentifier: UInt64?, screenName: String)
     
@@ -23,7 +23,7 @@ enum GARequestPayload {
 }
 
 extension GARequestPayload: Equatable {
-    static func ==(lhs: GARequestPayload, rhs: GARequestPayload) -> Bool {
+    public static func ==(lhs: GARequestPayload, rhs: GARequestPayload) -> Bool {
         switch (lhs, rhs) {
         case (let .event(_, lCategory, lAction, lLabel), let .event(_, rCategory, rAction, rLabel)):
             return lCategory == rCategory &&
