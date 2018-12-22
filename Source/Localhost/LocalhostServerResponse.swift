@@ -10,5 +10,10 @@ import Foundation
 
 public struct LocalhostServerResponse {
     public let httpUrlResponse: HTTPURLResponse
-    public let data: Data?
+    public let data: Any?
+    
+    public init(httpUrlResponse: HTTPURLResponse, data: Any? = nil) {
+        self.httpUrlResponse = httpUrlResponse
+        self.data = data
+    }
 }

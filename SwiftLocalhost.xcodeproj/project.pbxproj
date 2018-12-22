@@ -17,6 +17,7 @@
 		1C4BF397216FA095004794CB /* LocalhostServerResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C4BF390216FA095004794CB /* LocalhostServerResponse.swift */; };
 		1C4BF398216FA095004794CB /* GARequestPayload.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C4BF391216FA095004794CB /* GARequestPayload.swift */; };
 		1C4BF39F216FA33F004794CB /* Podfile in Resources */ = {isa = PBXBuildFile; fileRef = 1C4BF39E216FA33E004794CB /* Podfile */; };
+		1CA2340A21D3DFC7008436A0 /* LocalhostPort.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CA2340921D3DFC7008436A0 /* LocalhostPort.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -34,6 +35,7 @@
 		1C4BF39B216FA185004794CB /* SwiftLocalhost.podspec */ = {isa = PBXFileReference; lastKnownFileType = text; path = SwiftLocalhost.podspec; sourceTree = "<group>"; };
 		1C4BF39C216FA268004794CB /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		1C4BF39E216FA33E004794CB /* Podfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Podfile; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		1CA2340921D3DFC7008436A0 /* LocalhostPort.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalhostPort.swift; sourceTree = "<group>"; };
 		B368B3A45E59E277C654EC8F /* Pods_SwiftLocalhost.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SwiftLocalhost.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B45D040DED76B449E2B215BC /* Pods-SwiftLocalhost.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SwiftLocalhost.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SwiftLocalhost/Pods-SwiftLocalhost.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -106,6 +108,7 @@
 			children = (
 				1C4BF38E216FA095004794CB /* LocalhostRouter.swift */,
 				1C4BF38B216FA095004794CB /* LocalhostServer.swift */,
+				1CA2340921D3DFC7008436A0 /* LocalhostPort.swift */,
 				1C4BF390216FA095004794CB /* LocalhostServerResponse.swift */,
 			);
 			path = Localhost;
@@ -234,6 +237,7 @@
 				1C4BF397216FA095004794CB /* LocalhostServerResponse.swift in Sources */,
 				1C4BF396216FA095004794CB /* GARequestLoggingServer.swift in Sources */,
 				1C4BF398216FA095004794CB /* GARequestPayload.swift in Sources */,
+				1CA2340A21D3DFC7008436A0 /* LocalhostPort.swift in Sources */,
 				1C4BF393216FA095004794CB /* GARequestLoggingReport.swift in Sources */,
 				1C4BF395216FA095004794CB /* LocalhostRouter.swift in Sources */,
 				1C4BF394216FA095004794CB /* GARequestPayloadFactory.swift in Sources */,
