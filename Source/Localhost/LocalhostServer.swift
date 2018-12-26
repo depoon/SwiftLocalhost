@@ -48,8 +48,8 @@ extension LocalhostServer: LocalhostRouter {
 
 public class LocalhostServer {
     
+    public let portNumber: UInt
     let server: CRHTTPServer
-    let portNumber: UInt
     
     var recordedRequests: [URLRequest]
     
@@ -57,6 +57,11 @@ public class LocalhostServer {
         server = CRHTTPServer()
         self.portNumber = portNumber
         recordedRequests = [URLRequest]()
+    }
+    
+    public static func initializeUsingRandomPortNumber() -> LocalhostServer{
+        let availablePort: UInt = UInt(LocalhostPort.availablePortNumber())
+        return LocalhostServer(portNumber: availablePort)
     }
     
     fileprivate func handleRoute(routeBlock: @escaping ((URLRequest) -> LocalhostServerResponse?),
@@ -78,7 +83,7 @@ public class LocalhostServer {
             crResponse.setAllHTTPHeaderFields(allHeaderFields)
         }
         if let data = response.data {
-            crResponse.bodyData = data
+            crResponse.send(data)
         }
     }
     
