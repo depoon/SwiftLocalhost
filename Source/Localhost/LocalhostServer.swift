@@ -82,11 +82,14 @@ public class LocalhostServer {
         if let allHeaderFields = httpUrlResponse.allHeaderFields as? [String: String] {
             crResponse.setAllHTTPHeaderFields(allHeaderFields)
         }
-        if let data = response.data {
+        if let data = response.data as? Data {
+            if let dataString = String(data: data, encoding: String.Encoding.utf8) {
+                crResponse.send(dataString)
+                return
+            }
             crResponse.send(data)
         }
     }
-    
 }
 
 public enum LocalhostRequestMethod {
