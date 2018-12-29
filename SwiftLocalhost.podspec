@@ -1,7 +1,7 @@
 
 Pod::Spec.new do |s|
   s.name             = "SwiftLocalhost"
-  s.version          = "0.0.2"
+  s.version          = "0.0.3"
   s.summary          = "Swift Localhost Server for your testing needs"
   s.description      = <<-DESC
 Features
