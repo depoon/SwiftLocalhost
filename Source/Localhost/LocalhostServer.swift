@@ -13,28 +13,56 @@ extension LocalhostServer: LocalhostRouter {
     
     public func get(_ path: String, routeBlock: @escaping ((URLRequest) -> LocalhostServerResponse?)) {
         self.server.get(path, block: {  [weak self] (req, res, next) in
-            self?.handleRoute(routeBlock: routeBlock, crRequest: req, crResponse: res)
+            self?.handleRoute(httpMethod: "GET",
+                              routeBlock: routeBlock,
+                              crRequest: req,
+                              crResponse: res)
         })
     }
     
     public func post(_ path: String, routeBlock: @escaping ((URLRequest) -> LocalhostServerResponse?)) {
         self.server.post(path, block: {  [weak self] (req, res, next) in
-            self?.handleRoute(routeBlock: routeBlock, crRequest: req, crResponse: res)
+            self?.handleRoute(httpMethod: "POST",
+                              routeBlock: routeBlock,
+                              crRequest: req,
+                              crResponse: res)
         })
     }
     
     public func delete(_ path: String, routeBlock: @escaping ((URLRequest) -> LocalhostServerResponse?)) {
         self.server.delete(path, block: {  [weak self] (req, res, next) in
-            self?.handleRoute(routeBlock: routeBlock, crRequest: req, crResponse: res)
+            self?.handleRoute(httpMethod: "DELETE",
+                              routeBlock: routeBlock,
+                              crRequest: req,
+                              crResponse: res)
         })
-
     }
 
     public func put(_ path: String, routeBlock: @escaping ((URLRequest) -> LocalhostServerResponse?)) {
         self.server.put(path, block: {  [weak self] (req, res, next) in
-            self?.handleRoute(routeBlock: routeBlock, crRequest: req, crResponse: res)
+            self?.handleRoute(httpMethod: "PUT",
+                              routeBlock: routeBlock,
+                              crRequest: req,
+                              crResponse: res)
         })
-
+    }
+    
+    public func head(_ path: String, routeBlock: @escaping ((URLRequest) -> LocalhostServerResponse?)) {
+        self.server.head(path, block: {  [weak self] (req, res, next) in
+            self?.handleRoute(httpMethod: "HEAD",
+                              routeBlock: routeBlock,
+                              crRequest: req,
+                              crResponse: res)
+        })
+    }
+    
+    public func options(_ path: String, routeBlock: @escaping ((URLRequest) -> LocalhostServerResponse?)) {
+        self.server.options(path, block: {  [weak self] (req, res, next) in
+            self?.handleRoute(httpMethod: "OPTIONS",
+                              routeBlock: routeBlock,
+                              crRequest: req,
+                              crResponse: res)
+        })
     }
 
     public func startListening(){
@@ -51,7 +79,7 @@ public class LocalhostServer {
     public let portNumber: UInt
     let server: CRHTTPServer
     
-    var recordedRequests: [URLRequest]
+    public var recordedRequests: [URLRequest]
     
     public required init(portNumber: UInt){
         server = CRHTTPServer()
@@ -64,10 +92,11 @@ public class LocalhostServer {
         return LocalhostServer(portNumber: availablePort)
     }
     
-    fileprivate func handleRoute(routeBlock: @escaping ((URLRequest) -> LocalhostServerResponse?),
+    fileprivate func handleRoute(httpMethod: String, routeBlock: @escaping ((URLRequest) -> LocalhostServerResponse?),
                          crRequest: CRRequest,
                          crResponse: CRResponse) {
         var request = URLRequest(url: crRequest.url)
+        request.httpMethod = httpMethod
         request.allHTTPHeaderFields = crRequest.allHTTPHeaderFields
         if let body = crRequest.body as? Data {
             request.httpBody = body
@@ -103,8 +132,7 @@ public struct LocalhostRequest {
     public init(method: LocalhostRequestMethod, url: URL) {
         self.method = method
         self.url = url
-    }
-    
+    }    
 }
 
 protocol LocalhostResponse {
@@ -120,6 +148,4 @@ struct LocalhostJsonResponse: LocalhostResponse {
         self.httpUrlResponse = httpUrlResponse
         self.body = body
     }
-    
-    
 }
