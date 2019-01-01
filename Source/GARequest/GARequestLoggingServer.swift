@@ -19,10 +19,16 @@ public class GARequestLoggingServer {
         recordedEvents = [UInt64: GARequestPayload]()
     }
     
+    public static func initializeUsingRandomPortNumber() -> GARequestLoggingServer{
+        let availablePort: UInt = UInt(LocalhostPort.availablePortNumber())
+        return GARequestLoggingServer(portNumber: availablePort)
+    }
+
+    
     public func startListening() {
         localhostServer.get("/collect") { request in
             guard let query = request.url?.query else {
-                return nil
+                return self.empty200Response(request: request)
             }
             let splitQuery: [String] = query.components(separatedBy: "&")
             var queryDictionary = [String: String]()
@@ -37,10 +43,10 @@ public class GARequestLoggingServer {
             if let screenEvent = GARequestPayloadFactory().createScreeenEvent(query: queryDictionary), let zIdentifier = screenEvent.zIdentifier  {
                 self.recordedEvents[zIdentifier] = screenEvent
             }
-            return nil
+            return self.empty200Response(request: request)
         }
         localhostServer.post("/batch") { request in
-            return nil
+            return self.empty200Response(request: request)
         }
         self.localhostServer.startListening()
     }
@@ -63,5 +69,11 @@ public class GARequestLoggingServer {
         }
         
         return GARequestLoggingReport(payloads: payloads)
+    }
+    
+    fileprivate func empty200Response(request: URLRequest) -> LocalhostServerResponse{
+        let data: Data = "".data(using: String.Encoding.utf8)!
+        let urlResponse = HTTPURLResponse(url: request.url!, statusCode: 200, httpVersion: nil, headerFields: [String: String]())!
+        return LocalhostServerResponse(httpUrlResponse: urlResponse, data: data)
     }
 }
