@@ -14,6 +14,10 @@ public class GARequestLoggingServer {
     
     var recordedEvents: [UInt64: GARequestPayload]
     
+    public var portNumber: UInt {
+        return self.localhostServer.portNumber
+    }
+
     public init(portNumber: UInt) {
         self.localhostServer = LocalhostServer(portNumber: portNumber)
         recordedEvents = [UInt64: GARequestPayload]()
