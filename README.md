@@ -73,3 +73,4 @@ If you need to redirect 3rd party libraries (eg. Firebase, Google Analytics) to 
 ### 3. [Info.plist] - Modify App Info.plist
 Since we will be using `http` protocol to communicate with our localhost server, we will need to add an exception domain for `localhost` in your Info.plist file.
 
+![picture alt](./Resources/Info-plist-add-exception-domain.png)
