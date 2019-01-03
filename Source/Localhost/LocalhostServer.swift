@@ -98,7 +98,7 @@ public class LocalhostServer {
         var request = URLRequest(url: crRequest.url)
         request.httpMethod = httpMethod
         request.allHTTPHeaderFields = crRequest.allHTTPHeaderFields
-        if let body = crRequest.body as? Data {
+        if let body = crRequest.bodyFromData() {
             request.httpBody = body
         }
         self.recordedRequests.append(request)
@@ -149,3 +149,26 @@ struct LocalhostJsonResponse: LocalhostResponse {
         self.body = body
     }
 }
+
+extension CRRequest {
+    func bodyFromData() -> Data? {
+        guard let aBody = self.body else {
+            return nil
+        }
+        if let jsonObject = try? JSONSerialization.data(withJSONObject: aBody, options: self.jsonWriteOptions()) {
+            return jsonObject
+        }
+        if let bodyData = aBody as? Data {
+            return bodyData
+        }
+        return nil
+    }
+    
+    fileprivate func jsonWriteOptions() -> JSONSerialization.WritingOptions {
+        if #available(iOS 11.0, *) {
+            return [.sortedKeys, .prettyPrinted]
+        }
+        return .prettyPrinted
+    }
+}
+
