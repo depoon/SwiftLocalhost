@@ -8,6 +8,8 @@ SwiftLocalhost is available through CocoaPods. To install it, simply add the fol
 ```ruby
 pod 'SwiftLocalhost'
 ```
+## Under the hood
+`Swiftlocalhost` uses [Criollo](https://github.com/thecatalinstan/Criollo) library as the in-memory web server. 
 
 ## How to use - Follow these 4 steps to setup
 ### 1. [Localhost] - pod install `SwiftLocalhost` to your XCUITest target.
