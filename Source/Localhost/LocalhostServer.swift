@@ -119,10 +119,51 @@ public class LocalhostServer {
             crResponse.send(data)
         }
     }
+    
+    public func route(method: LocalhostRequestMethod,
+               path: String,
+               responseData: Data,
+               statusCode: Int = 200,
+               responseHeaderFields: [String: String]? = nil) {
+        let routeBlock = self.routeBlock(path: path,
+                                         responseData: responseData,
+                                         statusCode: statusCode,
+                                         responseHeaderFields: responseHeaderFields)
+        switch method {
+        case .GET:
+            self.get(path, routeBlock: routeBlock)
+        case .POST:
+            self.post(path, routeBlock: routeBlock)
+        case .PUT:
+            self.put(path, routeBlock: routeBlock)
+        case .DELETE:
+            self.delete(path, routeBlock: routeBlock)
+        case .HEAD:
+            self.head(path, routeBlock: routeBlock)
+        case .OPTIONS:
+            self.options(path, routeBlock: routeBlock)
+        }
+    }
+    
+    fileprivate func routeBlock(path: String,
+                                responseData: Data,
+                                statusCode: Int = 200,
+                                responseHeaderFields: [String: String]? = nil) -> ((URLRequest) -> LocalhostServerResponse?) {
+        let block: ((URLRequest) -> LocalhostServerResponse?) = { _ in
+            let serverPort = self.portNumber
+            let requestURL: URL = URL(string: "http://localhost:\(serverPort)\(path)")!
+            let httpUrlResponse = HTTPURLResponse(url: requestURL,
+                                                  statusCode: statusCode,
+                                                  httpVersion: nil,
+                                                  headerFields: responseHeaderFields)!
+            return LocalhostServerResponse(httpUrlResponse: httpUrlResponse, data: responseData)
+        }
+        return block
+    }
 }
 
 public enum LocalhostRequestMethod {
-    case get, post, put, delete, patch
+    case GET, POST, PUT, DELETE, HEAD, OPTIONS
 }
 public struct LocalhostRequest {
     
