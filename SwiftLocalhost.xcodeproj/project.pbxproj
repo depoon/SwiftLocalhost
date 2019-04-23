@@ -145,9 +145,9 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		1C4BF37E216F9401004794CB /* SwiftLocalhost */ = {
+		1C4BF37E216F9401004794CB /* SwiftLocalhost iOS */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 1C4BF387216F9402004794CB /* Build configuration list for PBXNativeTarget "SwiftLocalhost" */;
+			buildConfigurationList = 1C4BF387216F9402004794CB /* Build configuration list for PBXNativeTarget "SwiftLocalhost iOS" */;
 			buildPhases = (
 				26E12147F68D3D214934DD12 /* [CP] Check Pods Manifest.lock */,
 				1C4BF37A216F9401004794CB /* Sources */,
@@ -159,7 +159,7 @@
 			);
 			dependencies = (
 			);
-			name = SwiftLocalhost;
+			name = "SwiftLocalhost iOS";
 			productName = SwiftLocalhost;
 			productReference = 1C4BF37F216F9401004794CB /* SwiftLocalhost.framework */;
 			productType = "com.apple.product-type.framework";
@@ -191,7 +191,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				1C4BF37E216F9401004794CB /* SwiftLocalhost */,
+				1C4BF37E216F9401004794CB /* SwiftLocalhost iOS */,
 			);
 		};
 /* End PBXProject section */
@@ -386,7 +386,7 @@
 					"@loader_path/Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.depoon.SwiftLocalhost;
-				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				PRODUCT_NAME = SwiftLocalhost;
 				SKIP_INSTALL = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 4.0;
@@ -413,7 +413,7 @@
 					"@loader_path/Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.depoon.SwiftLocalhost;
-				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				PRODUCT_NAME = SwiftLocalhost;
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -432,7 +432,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		1C4BF387216F9402004794CB /* Build configuration list for PBXNativeTarget "SwiftLocalhost" */ = {
+		1C4BF387216F9402004794CB /* Build configuration list for PBXNativeTarget "SwiftLocalhost iOS" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				1C4BF388216F9402004794CB /* Debug */,

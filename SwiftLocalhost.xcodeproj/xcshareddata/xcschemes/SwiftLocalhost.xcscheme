@@ -15,8 +15,8 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "1C4BF37E216F9401004794CB"
-               BuildableName = "SwiftLocalhost.framework"
-               BlueprintName = "SwiftLocalhost"
+               BuildableName = "SwiftLocalhost_iOS.framework"
+               BlueprintName = "SwiftLocalhost iOS"
                ReferencedContainer = "container:SwiftLocalhost.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -46,8 +46,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "1C4BF37E216F9401004794CB"
-            BuildableName = "SwiftLocalhost.framework"
-            BlueprintName = "SwiftLocalhost"
+            BuildableName = "SwiftLocalhost_iOS.framework"
+            BlueprintName = "SwiftLocalhost iOS"
             ReferencedContainer = "container:SwiftLocalhost.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -64,8 +64,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "1C4BF37E216F9401004794CB"
-            BuildableName = "SwiftLocalhost.framework"
-            BlueprintName = "SwiftLocalhost"
+            BuildableName = "SwiftLocalhost_iOS.framework"
+            BlueprintName = "SwiftLocalhost iOS"
             ReferencedContainer = "container:SwiftLocalhost.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
