@@ -1,32 +1,39 @@
 # SwiftLocalhost
-Simple framework that creates a mock localhost server primarily used for XCUITest.
-### Installation
+A Simple framework that creates a mock localhost server, primarily used for XCUITest.
 
-##### [CocoaPods](http://cocoapods.org)
+## Installation
 
-SwiftLocalhost is available through CocoaPods. To install it, simply add the following line to your Podfile:
+### [CocoaPods](http://cocoapods.org)
+
+SwiftLocalhost is available through CocoaPods: to install it, add the following line to your Podfile:
 ```ruby
 pod 'SwiftLocalhost'
 ```
+
 ## Under the hood
+
 `Swiftlocalhost` uses [Criollo](https://github.com/thecatalinstan/Criollo) library as the in-memory web server. 
 
-## How to use - Follow these 4 steps to setup
-### 1. [Localhost] - pod install `SwiftLocalhost` to your XCUITest target.
+## How to use
+Follow these 4 steps to setup:
+
+### 1. [Localhost] Launching a `LocalhostServer` instance.
 
 There are 2 ways to create an instance of a Localhost.
 
-Using a specific port number
-```swift
-LocalhostServer(portNumber: 9001)
-```
+1. Using a specific port number
+  ```swift
+  LocalhostServer(portNumber: 9001)
+  ```
 
-Getting an instance with a random unused port number assigned to it. This is important if you want to execute your tests parallelly 
-```swift
-LocalhostServer.initializeUsingRandomPortNumber()
-```
+2. Getting an instance with a random unused port number assigned to it. This is important if you want to execute multiple tests in parallel.
 
-An example of how a XCTestCase class looks like
+  ```swift
+  LocalhostServer.initializeUsingRandomPortNumber()
+  ```
+
+Here's an example of how a XCTestCase class might look like:
+
 ```swift
 import SwiftLocalhost
 
@@ -46,9 +53,10 @@ class MovieListTest: XCTestCase {
 }
 ```
 
-### 2. [API] - Modify App API Requests with http://localhost:xxxx (where xxxx is port number)
+### 2. [API] Redirect your requests domain
 
-If you are using a specific port for your localhost, you can simply change the domain to http://localhost:xxxx.
+If you are using a specific port for your localhost, you can simply change the domain to http://localhost:xxxx (where xxxx is port number).
+
 ```swift
 class NetworkOperations {
 
@@ -72,14 +80,33 @@ ProcessInfo.processInfo.arguments
 
 If you need to redirect 3rd party libraries (eg. Firebase, Google Analytics) to the localhost server, you can use [NetworkInterceptor](https://github.com/depoon/NetworkInterceptor) pod created by Kenneth Poon.
 
-### 3. [Info.plist] - Modify App Info.plist
+### 3. [Info.plist] - Modify Your App Info.plist
+
 Since we will be using `http` protocol to communicate with our localhost server, we will need to add an exception domain for `localhost` in your Info.plist file.
 
 ![picture alt](./Resources/Info-plist-add-exception-domain.png)
 
+```xml
+<key>NSAppTransportSecurity</key>
+<dict>
+    <key>NSAllowsArbitraryLoads</key>
+    <true/>
+    <key>NSExceptionDomains</key>
+    <dict>
+        <key>localhost</key>
+        <dict>
+            <key>NSExceptionAllowsInsecureHTTPLoads</key>
+            <true/>
+            <key>NSIncludesSubdomains</key>
+            <true/>
+        </dict>
+    </dict>
+</dict>
+```
+
 You will also need to disable SSL Pinning if needed.
 
-### 4. [Mock Responses] - Setup localhost server with mock responses.
+### 4. [Mock Responses] - Setup localhost server mock responses
 
 You can setup specific mock response according to your test case needs. Set the `Data` instance of the response file as a response to a specific path that your test cases will be covering.
 
