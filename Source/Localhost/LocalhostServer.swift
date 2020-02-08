@@ -12,68 +12,103 @@ import Criollo
 extension LocalhostServer: LocalhostRouter {
     
     public func get(_ path: String, routeBlock: @escaping ((URLRequest) -> LocalhostServerResponse?)) {
+        let method: String = "GET"
+        self.setOverlayingRoute(method: method, path: path, routeBlock: routeBlock)
         self.server.get(path, block: {  [weak self] (req, res, next) in
-            self?.handleRoute(httpMethod: "GET",
-                              routeBlock: routeBlock,
+            guard let routeBlockPopped = self?.popOverlayingRoute(method: method, path: path) else {
+                return
+            }
+            self?.handleRoute(httpMethod: method,
+                              routeBlock: routeBlockPopped,
                               crRequest: req,
                               crResponse: res)
         })
     }
     
     public func post(_ path: String, routeBlock: @escaping ((URLRequest) -> LocalhostServerResponse?)) {
+        let method: String = "POST"
+        self.setOverlayingRoute(method: method, path: path, routeBlock: routeBlock)
         self.server.post(path, block: {  [weak self] (req, res, next) in
-            self?.handleRoute(httpMethod: "POST",
-                              routeBlock: routeBlock,
+            guard let routeBlockPopped = self?.popOverlayingRoute(method: method, path: path) else {
+                return
+            }
+            self?.handleRoute(httpMethod: method,
+                              routeBlock: routeBlockPopped,
                               crRequest: req,
                               crResponse: res)
         })
     }
     
     public func delete(_ path: String, routeBlock: @escaping ((URLRequest) -> LocalhostServerResponse?)) {
+        let method: String = "DELETE"
+        self.setOverlayingRoute(method: method, path: path, routeBlock: routeBlock)
         self.server.delete(path, block: {  [weak self] (req, res, next) in
-            self?.handleRoute(httpMethod: "DELETE",
-                              routeBlock: routeBlock,
+            guard let routeBlockPopped = self?.popOverlayingRoute(method: method, path: path) else {
+                return
+            }
+            self?.handleRoute(httpMethod: method,
+                              routeBlock: routeBlockPopped,
+                              crRequest: req,
+                              crResponse: res)
+        })
+    }
+    
+    public func put(_ path: String, routeBlock: @escaping ((URLRequest) -> LocalhostServerResponse?)) {
+        let method: String = "PUT"
+        self.setOverlayingRoute(method: method, path: path, routeBlock: routeBlock)
+        self.server.put(path, block: {  [weak self] (req, res, next) in
+            guard let routeBlockPopped = self?.popOverlayingRoute(method: method, path: path) else {
+                return
+            }
+            self?.handleRoute(httpMethod: method,
+                              routeBlock: routeBlockPopped,
                               crRequest: req,
                               crResponse: res)
         })
     }
 
-    public func put(_ path: String, routeBlock: @escaping ((URLRequest) -> LocalhostServerResponse?)) {
-        self.server.put(path, block: {  [weak self] (req, res, next) in
-            self?.handleRoute(httpMethod: "PUT",
-                              routeBlock: routeBlock,
+    public func patch(_ path: String, routeBlock: @escaping ((URLRequest) -> LocalhostServerResponse?)) {
+        let method: String = "PATCH"
+        self.setOverlayingRoute(method: method, path: path, routeBlock: routeBlock)
+        self.server.add(path, block: {  [weak self] (req, res, next) in
+            guard let routeBlockPopped = self?.popOverlayingRoute(method: method, path: path) else {
+                return
+            }
+            self?.handleRoute(httpMethod: method,
+                              routeBlock: routeBlockPopped,
                               crRequest: req,
                               crResponse: res)
         })
     }
-    
-    public func patch(_ path: String, routeBlock: @escaping ((URLRequest) -> LocalhostServerResponse?)) {
-        self.server.add(path, block: {  [weak self] (req, res, next) in
-            self?.handleRoute(httpMethod: "PATCH",
-                              routeBlock: routeBlock,
-                              crRequest: req,
-                              crResponse: res)
-            }, recursive: false, method: .patch)
-    }
-    
+
     public func head(_ path: String, routeBlock: @escaping ((URLRequest) -> LocalhostServerResponse?)) {
+        let method: String = "HEAD"
+        self.setOverlayingRoute(method: method, path: path, routeBlock: routeBlock)
         self.server.head(path, block: {  [weak self] (req, res, next) in
-            self?.handleRoute(httpMethod: "HEAD",
-                              routeBlock: routeBlock,
+            guard let routeBlockPopped = self?.popOverlayingRoute(method: method, path: path) else {
+                return
+            }
+            self?.handleRoute(httpMethod: method,
+                              routeBlock: routeBlockPopped,
                               crRequest: req,
                               crResponse: res)
         })
     }
     
     public func options(_ path: String, routeBlock: @escaping ((URLRequest) -> LocalhostServerResponse?)) {
+        let method: String = "OPTIONS"
+        self.setOverlayingRoute(method: method, path: path, routeBlock: routeBlock)
         self.server.options(path, block: {  [weak self] (req, res, next) in
-            self?.handleRoute(httpMethod: "OPTIONS",
-                              routeBlock: routeBlock,
+            guard let routeBlockPopped = self?.popOverlayingRoute(method: method, path: path) else {
+                return
+            }
+            self?.handleRoute(httpMethod: method,
+                              routeBlock: routeBlockPopped,
                               crRequest: req,
                               crResponse: res)
         })
     }
-
+    
     public func startListening(){
         self.server.startListening(nil, portNumber: self.portNumber)
     }
@@ -88,12 +123,15 @@ public class LocalhostServer {
     public let portNumber: UInt
     let server: CRHTTPServer
     
+    var overlayingRoutes: [LocalhostServerMethodPath: [LocalhostServerRoute]]
+    
     public var recordedRequests: [URLRequest]
     
     public required init(portNumber: UInt){
         server = CRHTTPServer()
         self.portNumber = portNumber
         recordedRequests = [URLRequest]()
+        overlayingRoutes = [LocalhostServerMethodPath: [LocalhostServerRoute]]()
     }
     
     public static func initializeUsingRandomPortNumber() -> LocalhostServer{
@@ -102,8 +140,8 @@ public class LocalhostServer {
     }
     
     fileprivate func handleRoute(httpMethod: String, routeBlock: @escaping ((URLRequest) -> LocalhostServerResponse?),
-                         crRequest: CRRequest,
-                         crResponse: CRResponse) {
+                                 crRequest: CRRequest,
+                                 crResponse: CRResponse) {
         var request = URLRequest(url: crRequest.url)
         request.httpMethod = httpMethod
         request.allHTTPHeaderFields = crRequest.allHTTPHeaderFields
@@ -130,10 +168,10 @@ public class LocalhostServer {
     }
     
     public func route(method: LocalhostRequestMethod,
-               path: String,
-               responseData: Data,
-               statusCode: Int = 200,
-               responseHeaderFields: [String: String]? = nil) {
+                      path: String,
+                      responseData: Data,
+                      statusCode: Int = 200,
+                      responseHeaderFields: [String: String]? = nil) {
         let routeBlock = self.routeBlock(path: path,
                                          responseData: responseData,
                                          statusCode: statusCode,
@@ -182,7 +220,7 @@ public struct LocalhostRequest {
     public init(method: LocalhostRequestMethod, url: URL) {
         self.method = method
         self.url = url
-    }    
+    }
 }
 
 protocol LocalhostResponse {
@@ -222,3 +260,59 @@ extension CRRequest {
     }
 }
 
+struct LocalhostServerMethodPath: Hashable, Equatable {
+    let method: String
+    let path: String
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(method)
+        hasher.combine(path)
+    }
+    
+    public static func ==(lhs: LocalhostServerMethodPath, rhs: LocalhostServerMethodPath) -> Bool {
+        guard lhs.method == rhs.method else { return false }
+        guard lhs.path == rhs.path else { return false }
+        return true
+    }
+}
+
+struct LocalhostServerRoute {
+    let pathMethod: LocalhostServerMethodPath
+    let routeBlock: ((URLRequest) -> LocalhostServerResponse?)
+}
+
+extension LocalhostServer {
+    func setOverlayingRoute(method: String,
+                            path: String,
+                            routeBlock: @escaping ((URLRequest) -> LocalhostServerResponse?)) {
+        
+        let localhostServerMethodPath = LocalhostServerMethodPath(method: method, path: path)
+        let newServerRoute = LocalhostServerRoute(pathMethod: localhostServerMethodPath, routeBlock: routeBlock)
+        let methodPathKeys = Array(self.overlayingRoutes.keys)
+        if methodPathKeys.contains(localhostServerMethodPath), var existingRoutes = self.overlayingRoutes[localhostServerMethodPath] {
+            existingRoutes.append(newServerRoute)
+            self.overlayingRoutes[localhostServerMethodPath] = existingRoutes
+        } else {
+            let routes: [LocalhostServerRoute] = [
+                newServerRoute
+            ]
+            self.overlayingRoutes[localhostServerMethodPath] = routes
+        }
+    }
+    
+    func popOverlayingRoute(method: String, path: String) -> ((URLRequest) -> LocalhostServerResponse?)? {
+        let localhostServerMethodPath = LocalhostServerMethodPath(method: method, path: path)
+        let methodPathKeys = Array(self.overlayingRoutes.keys)
+        guard methodPathKeys.contains(localhostServerMethodPath),
+            var existingRoutes = self.overlayingRoutes[localhostServerMethodPath],
+            existingRoutes.count > 0  else {
+                return nil
+        }
+        if existingRoutes.count == 1 {
+            return existingRoutes.first?.routeBlock
+        }
+        let firstItem = existingRoutes.removeFirst()
+        self.overlayingRoutes[localhostServerMethodPath] = existingRoutes
+        return firstItem.routeBlock
+    }
+}
