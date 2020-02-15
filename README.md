@@ -96,3 +96,21 @@ self.localhostServer.get("/3/movie/popular", routeBlock: { request in
 })
 
 ```
+
+You can queue up mock responses for the same route path. Mock responses will be returned in FIFO order. Used responses will be removed from the queue unless there is only 1 response left in the queue.
+
+```swift
+
+var dataResponse1, dataResponse2, dataResponse3: Data!
+
+self.localhostServer.route(method: .GET,
+                           path: "/3/movie/popular",
+                           responseData: dataResponse1)
+self.localhostServer.route(method: .GET,
+                           path: "/3/movie/popular",
+                           responseData: dataResponse2)
+self.localhostServer.route(method: .GET,
+                           path: "/3/movie/popular",
+                           responseData: dataResponse2)
+```
+
