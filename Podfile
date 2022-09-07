@@ -7,7 +7,7 @@ use_frameworks!
 inhibit_all_warnings!
 
 def pods
-    pod 'Criollo'
+    pod 'Criollo', '~> 1.1'
 end
 
 target 'SwiftLocalhost' do
